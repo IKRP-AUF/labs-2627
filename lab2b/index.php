@@ -1,6 +1,8 @@
 <?php
 
-define('CUSTOMERS_FILE_PATH', 'customers-100.csv');
+$start_time = microtime(true);
+
+define('CUSTOMERS_FILE_PATH', 'customers-100000.csv');
 
 function get_hundred_customers_data()
 {
@@ -45,6 +47,14 @@ $customers = get_hundred_customers_data();
 <h1>
     Customers
 </h1>
+
+<?php
+$end_time = microtime(true);
+$execution_time = $end_time - $start_time;
+?>
+
+<p><strong>Execution Time:</strong> <?php echo number_format($execution_time, 5); ?> seconds</p>
+
 <h4>
 <?php foreach(range('A', 'Z') as $letter): ?>
     <a href="filtered.php?letter=<?php echo $letter; ?>"><?php echo $letter; ?></a>
@@ -79,7 +89,6 @@ The dataset is retrieved from this URL <a href="https://www.datablist.com/learn/
     ?>
     </tbody>
 </table>
-
 
 </body>
 </html>
