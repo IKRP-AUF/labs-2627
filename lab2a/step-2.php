@@ -4,14 +4,25 @@ require "helpers/helper-functions.php";
 
 session_start();
 
+if (
+    empty($_POST['fullname']) ||
+    empty($_POST['birthday']) ||
+    empty($_POST['contactnumber']) ||
+    empty($_POST['sex'])
+) {
+    header("Location: index.php");
+    exit();
+}
+
 $fullname = $_POST['fullname'];
-$email = $_POST['email'];
-# Encrypt the password first before saving it to the Session Variables
-$password = $_POST['password'];
+$birthday = $_POST['birthday'];
+$contactnumber = $_POST['contactnumber'];
+$sex = $_POST['sex'];
 
 $_SESSION['fullname'] = $fullname;
-$_SESSION['email'] = $email;
-$_SESSION['password'] = $password;
+$_SESSION['birthday'] = $birthday;
+$_SESSION['contactnumber'] = $contactnumber;
+$_SESSION['sex'] = $sex;
 
 dump_session();
 
@@ -39,20 +50,13 @@ dump_session();
         <form action="step-3.php" method="POST">
 
           <fieldset>
-            <label>Birthdate</label>
-            <input type="date" name="birthdate">
+<label>Program</label>
+<input type="text" name="program" placeholder="BS Information Technology" required>
 
-            <label>Sex</label>
-            <br />
-            <input type="radio" name="sex" value="male" checked="checked">Male
-            <br />
-            <input type="radio" name="sex" value="female">Female
-            <br />
+<label>Complete Address</label>
+<textarea name="address" rows="3" required></textarea>
 
-            <label>Complete Address</label>
-            <textarea name="address" rows="3"></textarea>
-
-            <button type="submit">Next</button>
+<button type="submit">Next</button>
           </fieldset>
 
         </form>

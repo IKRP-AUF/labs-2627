@@ -4,15 +4,52 @@ require "helpers/helper-functions.php";
 
 session_start();
 
-$contact_number = $_POST['contact_number'];
-$program = $_POST['program'];
-$agree = $_POST['agree'];
+if (
+    empty($_POST['email']) ||
+    empty($_POST['password']) ||
+    !isset($_POST['agree'])
+) {
+    header("Location: step-3.php");
+    exit();
+}
 
-$_SESSION['contact_number'] = $contact_number;
-$_SESSION['program'] = $program;
-$_SESSION['agree'] = $agree;
+$email = $_POST['email'];
+$password = $_POST['password'];
+$agree = isset($_POST['agree']);
+
+$_SESSION['email'] = $email;
+
+// Hash the password
+$_SESSION['password'] = password_hash($password, PASSWORD_DEFAULT);
+
+$_SESSION['agree'] = $agree ? "Yes" : "No";
 
 $form_data = $_SESSION;
+
+// Format birthday
+$form_data['birthday'] = date("F j, Y", strtotime($form_data['birthday']));
+
+// Compute age
+$birthdate = new DateTime($_SESSION['birthday']);
+$today = new DateTime();
+$age = $today->diff($birthdate)->y;
+
+$form_data['age'] = $age;
+
+$file = fopen("registrations.csv", "a");
+
+fputcsv($file, [
+    $_SESSION['fullname'],
+    $_SESSION['birthday'],
+    $age,
+    $_SESSION['contactnumber'],
+    $_SESSION['sex'],
+    $_SESSION['program'],
+    $_SESSION['address'],
+    $_SESSION['email']
+]);
+
+fclose($file);
 
 dump_session();
 
