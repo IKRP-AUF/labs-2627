@@ -2,7 +2,7 @@
 
 $start_time = microtime(true);
 
-define('CUSTOMERS_FILE_PATH', 'customers-100000.csv');
+define('CUSTOMERS_FILE_PATH', 'customers-10000.csv');
 
 function get_hundred_customers_data()
 {
